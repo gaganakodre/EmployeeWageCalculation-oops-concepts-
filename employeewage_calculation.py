@@ -51,7 +51,8 @@ class Employee:
 
 
 class Company:
-    def __init__(self):
+    def __init__(self,company_name):
+        self.company_name=company_name
         self.employee_dict = {}
 
     def add_employee(self, employee):
@@ -98,7 +99,8 @@ class Company:
 
 
 if __name__ == '__main__':
-    company = Company()
+    company_name=input("enter the company name")
+    company = Company(company_name)
 
 
     def choice1():
