@@ -56,7 +56,8 @@ class Employee:
         Function used to display the values in the form of dictionary
         """
         try:
-            return {"employee": {"Name": self.name,"department":self.department, "Total_wage": self.calculating_wage()}}
+            return {
+                "employee": {"Name": self.name, "department": self.department, "Total_wage": self.calculating_wage()}}
         except Exception as e:
             logging.error(e)
 
@@ -91,17 +92,21 @@ class JsonOperation:
 
 
 class Company:
+
     def __init__(self, name):
         self.name = name
-        self.employee_dict = {}
+        self.__employee_dict = {}
+
+    def __len__(self):
+        return len(self.__employee_dict)
+
 
     def add_employee(self, emp):
         """
         Function used to add the employee and storing in the dictionary called employee_dict
         """
         try:
-            self.employee_dict.update({emp.name: emp})
-            return self.employee_dict
+            self.__employee_dict.update({emp.name: emp})
         except Exception as e:
             logging.error(e)
 
@@ -110,14 +115,13 @@ class Company:
         Function to update the employee
         """
         try:
-            employee_name = input("Enter employee name you want to update: ")
-            employee_exist = self.employee_dict.get(employee_name)
+
+            employee_exist = self.get_employee(name)
             if not employee_exist:
                 print("name not present")
                 return
-            employee_exist.name = name
             employee_exist.department = department
-            return self.employee_dict
+            return self.__employee_dict
         except Exception as e:
             logging.error(e)
 
@@ -128,7 +132,7 @@ class Company:
         :return: employee object contain values
         """
         try:
-            emp_obj = self.employee_dict.get(employee_name)
+            emp_obj = self.__employee_dict.get(employee_name)
             return emp_obj
         except Exception as e:
             logging.error(e)
@@ -143,7 +147,7 @@ class Company:
                 print("name dosen't exist")
                 return
 
-            self.employee_dict.pop(emp_name)
+            self.__employee_dict.pop(emp_name)
         except Exception as e:
             logging.error(e)
 
@@ -155,8 +159,8 @@ class Company:
 
             # print(self.employee_dict)
             print("{:<10} {:<10} {:<10}".format('name', 'department', 'salary'))
-            for i in self.employee_dict:
-                emp_obj = self.employee_dict.get(i)
+            for i in self.__employee_dict:
+                emp_obj = self.__employee_dict.get(i)
                 print(emp_obj.as_string())
         except Exception as e:
             logging.error(e)
@@ -252,22 +256,6 @@ def add_employee():
         logging.error(e)
 
 
-def get_employee():
-    """
-    Function to get the employee
-    """
-    try:
-        company_name = input("Enter company name : ")
-        company_exist = comp_dict.get(company_name)
-        if company_exist is None:
-            print("Company doesn't exit ")
-            return
-        employee_name = input("Enter employee name : ")
-        company_exist.get_employee(employee_name)
-    except Exception as e:
-        logging.error(e)
-
-
 def update_employee():
     """
     Function to update or edit the employee details who are present
@@ -322,7 +310,6 @@ def write_json():
     company.write_json()
 
 
-
 if __name__ == "__main__":
     try:
         comp_dict = {}
@@ -332,7 +319,7 @@ if __name__ == "__main__":
             dict_e = {1: add_company,
                       2: display_company,
                       3: add_employee,
-                      4: get_employee,
+                      # 4: get_employee,
                       5: delete_employee,
                       6: display_employees,
                       7: update_employee,
